@@ -11,6 +11,8 @@ import SocketIOClient from '../node_modules/socket.io-client/dist/socket.io.js';
 import { GiftedChat } from 'react-native-gifted-chat';
 // let socket = SocketIOClient('http://192.168.0.106:1202');
 
+GLOBAL = require ('./global.js')
+
 class Control extends Component {
   constructor(props){
     super(props);
@@ -47,6 +49,8 @@ class Control extends Component {
   //   fetch(url)
   //   .then((response) => response.json())
   //   .then((responseData) => {
+  //     console.log(response)
+  //     console.log(responseData)
   //       this.props.dispatch(changeState("device1",responseData.device1));
   //       this.props.dispatch(changeState("device2",responseData.device2));
   //       this.props.dispatch(changeState("device3",responseData.device3));
@@ -76,25 +80,27 @@ class Control extends Component {
   fetchData(){
     let socket = SocketIOClient('http://192.168.0.106:1202');
     socket.emit('requestToFetchData', 'positive')
-    socket.on('responseDevice', function(responseDevice){
-      socket.on('responseData', function(responseData){
-        console.log(responseData)
-        // switch(responseDevice){
-        //   case 1:
-        //     this.props.dispatch(changeState("device1",responseData))
-        //     break;
-        //   case 2:
-        //     this.props.dispatch(changeState("device2",responseData))
-        //     break;
-        //   case 3:
-        //     this.props.dispatch(changeState("device3",responseData))
-        //     break;
-        //   case 4:
-        //     this.props.dispatch(changeState("device4",responseData))
-        //     break;
-        // }
-      })
+    socket.on('resD1', function(resD1){
+      // console.log('d1', resD1)
+      GLOBAL.D1_STATE = resD1
     })
+    socket.on('resD2', function(resD2){
+      // console.log('d2',resD2)
+      GLOBAL.D2_STATE = resD2
+    })
+    socket.on('resD3', function(resD3){
+      // console.log('d3',resD3)
+      GLOBAL.D3_STATE = resD3
+    })
+    socket.on('resD4', function(resD4){
+      // console.log('d4',resD4)
+      GLOBAL.D4_STATE = resD4
+    })
+    // console.log('global var ', GLOBAL.D1_STATE)    
+    this.props.dispatch(changeState("device1", GLOBAL.D1_STATE))
+    this.props.dispatch(changeState("device2", GLOBAL.D2_STATE))
+    this.props.dispatch(changeState("device3", GLOBAL.D3_STATE))
+    this.props.dispatch(changeState("device4", GLOBAL.D4_STATE))
   }
 
 
