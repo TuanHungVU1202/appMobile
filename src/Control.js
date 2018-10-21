@@ -78,7 +78,8 @@ class Control extends Component {
   
 
   fetchData(){
-    let socket = SocketIOClient('http://192.168.0.106:1202');
+    var socketUrl = ('http://'+ this.props.webserverURL).replace('2111', '1202')
+    let socket = SocketIOClient(socketUrl);
     socket.emit('requestToFetchData', 'positive')
     socket.on('resD1', function(resD1){
       // console.log('d1', resD1)
@@ -108,7 +109,8 @@ class Control extends Component {
   // because initial switch- state is FALSE -OFF => if current state is ON
   // => switch state change event is FALSE
   controlDevice(device, state){
-    let socket = SocketIOClient('http://192.168.0.106:1202');
+    var socketUrl = ('http://'+ this.props.webserverURL).replace('2111', '1202')
+    let socket = SocketIOClient(socketUrl);
     socket.emit('deviceFromAndroid', device)
     if(state === false) {
       sendState = "on"
@@ -121,16 +123,16 @@ class Control extends Component {
   };
 
 
-  // sendSetTimetoServer(id,TimeOn,TimeOff){
-  //   //http://192.168.100.20:9000/submitTheTimeDevice1?setTimeOn=01%3A02&setTimeOff=14%3A03
-  //   //var url = 'http://192.168.100.20:9000/submitTheTimeDevice1?setTimeOn=05:06&setTimeOff=17:08'
-  //   var url = 'http://'+ this.props.webserverURL + '/submitTheTimeDevice' + id + '?setTimeOn=' + TimeOn + '&setTimeOff=' + TimeOff;
-  //   fetch(url)
-  //   .catch((error) => {
-  //     this.sendError();
-  //   })
-  //   .done();
-  // };
+  sendSetTimetoServer(id,TimeOn,TimeOff){
+    //http://192.168.100.20:9000/submitTheTimeDevice1?setTimeOn=01%3A02&setTimeOff=14%3A03
+    //var url = 'http://192.168.100.20:9000/submitTheTimeDevice1?setTimeOn=05:06&setTimeOff=17:08'
+    var url = 'http://'+ this.props.webserverURL + '/submitTheTimeDevice' + id + '?setTimeOn=' + TimeOn + '&setTimeOff=' + TimeOff;
+    fetch(url)
+    .catch((error) => {
+      this.sendError();
+    })
+    .done();
+  };
 
   renderModalContent = (a,b,c,d,e) => (
     <View style = {styles.modalView}>

@@ -9,7 +9,7 @@ class Setting extends Component {
     super(props)
     this.state = {
         text: '',
-        url : "192.168.100.20",
+        url : " ",
     };
   }
   render() {
