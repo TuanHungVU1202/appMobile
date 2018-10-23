@@ -9,7 +9,6 @@ import ApiAi from "react-native-api-ai"
 import Tts from 'react-native-tts';
 import SocketIOClient from '../node_modules/socket.io-client/dist/socket.io.js';
 import { GiftedChat } from 'react-native-gifted-chat';
-// let socket = SocketIOClient('http://192.168.0.106:1202');
 
 GLOBAL = require ('./global.js')
 
@@ -97,12 +96,23 @@ class Control extends Component {
       // console.log('d4',resD4)
       GLOBAL.D4_STATE = resD4
     })
+  }
+
+  updateData(){
     // console.log('global var ', GLOBAL.D1_STATE)    
     this.props.dispatch(changeState("device1", GLOBAL.D1_STATE))
     this.props.dispatch(changeState("device2", GLOBAL.D2_STATE))
     this.props.dispatch(changeState("device3", GLOBAL.D3_STATE))
     this.props.dispatch(changeState("device4", GLOBAL.D4_STATE))
   }
+
+  orderEvents(){
+    this.fetchData()
+    setTimeout(() => {
+      this.updateData();
+    }, 500)
+  }
+
 
 
   // send states to socket to connect with webserver
@@ -224,9 +234,21 @@ class Control extends Component {
     }
 
   };
+
+
   componentDidMount(){
-    this.fetchData();
+    this.fetchData()
+    this.timer = setTimeout(() => {
+      this.updateData();
+    }, 1500)
   }
+
+
+  componentWillUnmount(){
+    clearTimeout(this.timer)
+  }
+
+
   render() {
     return (
       <View style={{flex:1, backgroundColor: "aliceblue"}}>
@@ -245,7 +267,7 @@ class Control extends Component {
               centerComponent={{ text: 'Control', style: { color: 'white',fontSize:23, left:-7 } }} 
               rightComponent={
                   <Icon
-                      onPress ={()=>{this.fetchData()}}
+                      onPress ={()=>{this.orderEvents()}}
                       name = "sync"
                       color = "white"
                       size = {35}
@@ -465,8 +487,8 @@ class Control extends Component {
         </Modal>
       </View>
     );
-  }
-}
+  };
+};
 
 
 function mapStateToProps(state){

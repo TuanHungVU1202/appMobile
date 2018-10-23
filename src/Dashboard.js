@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
   },
   valueOfBox:{
     fontSize: 30,
-    marginTop:20
+    marginTop:20,
+    color: 'gray',
   }
 })

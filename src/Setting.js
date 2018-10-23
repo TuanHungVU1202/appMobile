@@ -77,6 +77,5 @@ const styles = StyleSheet.create({
         color: "red",
         marginTop:30,
         marginLeft:150,
-
     }
 })
